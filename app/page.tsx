@@ -1,11 +1,22 @@
-async function getData() {
-  const json = await import("./siteData.json");
+import { getNotes } from "./db";
+import NoteList from "./components/NoteList/NoteList";
+import CreateNote from "./components/CreateNote/CreateNote";
+import DeleteNote from "./components/DeleteNote/DeleteNote";
 
-  return json;
+async function getData() {
+  const data = await getNotes();
+
+  return data;
 }
 
 export default async function Page() {
   const data = await getData();
 
-  return <main>{data.title}</main>;
+  return (
+    <main>
+      <h1>Note Taking App</h1>
+      <NoteList notes={data} />
+      <CreateNote />
+    </main>
+  );
 }
