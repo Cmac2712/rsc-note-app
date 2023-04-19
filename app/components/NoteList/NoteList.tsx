@@ -1,21 +1,27 @@
 "use client";
 
-import { FC, useState } from "react";
 import { NormalisedNote } from "@/app/db";
 import DeleteNote from "../DeleteNote/DeleteNote";
-import useNotes from "@/app/hooks/useNotes";
+import { useQuery } from "@tanstack/react-query";
 
-interface NoteProps {
+interface NoteListProps {
   notes: NormalisedNote[];
 }
 
-const NoteList: FC<NoteProps> = () => {
-  const [notes] = useNotes();
+const NoteList = () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["notes"],
+    queryFn: () => fetch("/api/notes").then((res) => res.json()),
+  });
+
+  if (isLoading || error) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <ul>
-        {notes.map((note) => (
+        {data?.map((note: { id: number; text: string }) => (
           <li key={note.id}>
             {note.text}
             <DeleteNote id={note.id} />

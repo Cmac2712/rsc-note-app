@@ -1,21 +1,15 @@
 import { NormalisedNote } from "@/app/db";
-import { useEffect, useState } from "react";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+
+async function getNotes() {
+  const data = await fetch("/api/notes");
+  const json = await data.json();
+
+  return json;
+}
 
 function useNotes() {
-  const [notes, setNotes] = useState<NormalisedNote[]>([]);
-
-  useEffect(() => {
-    async function getNotes() {
-      const data = await fetch("/api/notes");
-      const json = await data.json();
-
-      setNotes(json);
-    }
-
-    getNotes();
-  }, []);
-
-  return [notes, setNotes] as const;
+  return useQuery({ queryKey: ["notes"], queryFn: getNotes });
 }
 
 export default useNotes;
