@@ -9,22 +9,19 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const note = await request.json();
 
-  const res = await createNote(note);
+  await createNote(note);
 
-  console.log(res);
+  const notes = await getNotes();
 
-  return new Response(
-    JSON.stringify({
-      id: Number(res.id),
-      text: res.text,
-      created_at: res.created_at?.toISOString(),
-    })
-  );
+  return new Response(JSON.stringify(notes));
 }
 
 export async function DELETE(request: Request) {
   const noteID = await request.json();
 
   deleteNote(noteID);
-  return new Response(`Deleted: ${noteID}`);
+
+  const notes = await getNotes();
+
+  return new Response(JSON.stringify(notes));
 }

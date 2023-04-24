@@ -1,8 +1,9 @@
 "use client";
 
 import { NormalisedNote } from "@/app/db";
-import DeleteNote from "../DeleteNote/DeleteNote";
-import { useQuery } from "@tanstack/react-query";
+import { NoteListItem } from "../NoteListItem";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { FormDemo } from "@ui/Form";
 
 interface NoteListProps {
   notes: NormalisedNote[];
@@ -11,23 +12,31 @@ interface NoteListProps {
 const NoteList = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["notes"],
-    queryFn: () => fetch("/api/notes").then((res) => res.json()),
+    queryFn: async () => {
+      const res = await fetch("/api/notes").then((res) => res.json());
+      const json = (await res.json()) as NormalisedNote[];
+
+      return json;
+    },
   });
 
   if (isLoading || error) {
     return <div>Loading...</div>;
   }
-
   return (
     <>
-      <ul>
-        {data?.map((note: { id: number; text: string }) => (
-          <li key={note.id}>
-            {note.text}
-            <DeleteNote id={note.id} />
-          </li>
+      {/* <ReactQueryDevtools initialIsOpen={false}> */}
+      <FormDemo />
+      <ul
+        style={{
+          padding: "0",
+        }}
+      >
+        {data?.map((note) => (
+          <NoteListItem key={note.id} note={note} />
         ))}
       </ul>
+      {/* </ReactQueryDevtools> */}
     </>
   );
 };
