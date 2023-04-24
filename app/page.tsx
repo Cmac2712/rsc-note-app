@@ -14,7 +14,7 @@ export default async function Page() {
         margin: "auto",
       }}
     >
-      <h1>Note Taking App</h1>
+      <h1 className="text-3xl font-bold underline">Note Taking App</h1>
       {/* @ts-ignore */}
       <HydratedNotes>
         <Suspense fallback={<div>Loading...</div>}>

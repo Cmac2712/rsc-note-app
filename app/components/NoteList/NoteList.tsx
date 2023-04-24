@@ -26,12 +26,7 @@ const NoteList = () => {
   return (
     <>
       {/* <ReactQueryDevtools initialIsOpen={false}> */}
-      <FormDemo />
-      <ul
-        style={{
-          padding: "0",
-        }}
-      >
+      <ul>
         {data?.map((note) => (
           <NoteListItem key={note.id} note={note} />
         ))}
