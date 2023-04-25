@@ -8,18 +8,13 @@ export default async function Page() {
   const data = await getNotes();
 
   return (
-    <main
-      style={{
-        maxWidth: 300,
-        margin: "auto",
-      }}
-    >
-      <h1 className="text-3xl font-bold underline">Note Taking App</h1>
-      {/* @ts-ignore */}
+    <main className="container max-w-xl py-2 mx-auto">
+      <h1 className="text-3xl font-bold underline text-center my-3">
+        Note Taking App
+      </h1>
       <HydratedNotes>
         <Suspense fallback={<div>Loading...</div>}>
-          {/* @ts-ignore */}
-          <NoteList notes={data} />
+          <NoteList />
         </Suspense>
       </HydratedNotes>
       <CreateNote />

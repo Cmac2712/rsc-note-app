@@ -2,23 +2,14 @@
 
 import { NormalisedNote } from "@/app/db";
 import { NoteListItem } from "../NoteListItem";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { FormDemo } from "@ui/Form";
+import { useGetNotes } from "@/app/hooks/useGetNotes";
 
 interface NoteListProps {
   notes: NormalisedNote[];
 }
 
 const NoteList = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["notes"],
-    queryFn: async () => {
-      const res = await fetch("/api/notes").then((res) => res.json());
-      const json = (await res.json()) as NormalisedNote[];
-
-      return json;
-    },
-  });
+  const { data, isLoading, error } = useGetNotes();
 
   if (isLoading || error) {
     return <div>Loading...</div>;
